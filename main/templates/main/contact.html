@@ -1,0 +1,29 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+  Contact Us
+{% endblock %}
+
+{% block content %}
+  <section class="contact my-5">
+    <div class="container">
+      <h2 class="text-center mb-4">Contact Us</h2>
+      <p>If you have any questions or comments, please feel free to reach out to us using the form below:</p>
+      <form>
+        <div class="mb-3">
+          <label for="name" class="form-label">Your Name</label>
+          <input type="text" class="form-control" id="name" placeholder="Enter your name" required />
+        </div>
+        <div class="mb-3">
+          <label for="email" class="form-label">Your Email</label>
+          <input type="email" class="form-control" id="email" placeholder="Enter your email" required />
+        </div>
+        <div class="mb-3">
+          <label for="message" class="form-label">Your Message</label>
+          <textarea class="form-control" id="message" rows="5" placeholder="Enter your message" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Send Message</button>
+      </form>
+    </div>
+  </section>
+{% endblock %}

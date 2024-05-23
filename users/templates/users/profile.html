@@ -1,0 +1,31 @@
+{% extends 'main/base.html' %}
+{% block title %}
+  Profile editing
+{% endblock %}
+{% block content %}
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 mx-auto mb-5">
+        <h1 style="text-align: center;" class="m-5">Change your personal information:</h1>
+        <form method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+
+          <input type="hidden" name="next" value="{{ next }}" />
+          {% if user.image %}
+            <p>
+              <img src="{{ user.image.url }}" alt="" width="250px" />
+            </p>
+          {% else %}
+            <p>
+              <img src="{{ default_image }}" alt="" width="250px" />
+            </p>
+          {% endif %}
+          {{ form.as_p }}
+          <button type="submit" class="btn btn-success">Update</button>
+        </form>
+        <hr />
+        <a href="{% url 'users:password_change' %}">Change password</a>
+      </div>
+    </div>
+  </div>
+{% endblock %}

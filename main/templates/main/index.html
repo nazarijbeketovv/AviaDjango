@@ -1,0 +1,44 @@
+{% extends 'main/base.html' %}
+{% block title %}
+  Airline Ticket Booking
+{% endblock %}
+{% block content %}
+  <!-- Header Section -->
+  <header class="bg-primary text-white text-center py-5">
+    <div class="container">
+      <h1 class="display-4">Book Your Flight</h1>
+      <p class="lead">Find the best deals on airline tickets</p>
+    </div>
+  </header>
+
+  <!-- Booking Form Section -->
+  <section class="booking-form my-5">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 mx-auto">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Flight Booking Form</h5>
+              <form method="get" action="{% url 'main:search_flights' %}">
+                <div class="mb-3">
+                  <label for="origin" class="form-label">From</label>
+                  <input type="text" class="form-control" id="origin" name="origin" placeholder="Enter departure city" required />
+                </div>
+                <div class="mb-3">
+                  <label for="destination" class="form-label">To</label>
+                  <input type="text" class="form-control" id="destination" name="destination" placeholder="Enter destination city" required />
+                </div>
+                <div class="mb-3">
+                  <label for="departure" class="form-label">Departure Date</label>
+                  <input type="date" class="form-control" id="departure" name="departure" required />
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100">Search Flights</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}

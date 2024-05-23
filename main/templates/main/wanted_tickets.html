@@ -1,0 +1,37 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+  Flight Results
+{% endblock %}
+
+{% block content %}
+  <!-- Search Results Section -->
+  <section class="search-results my-5">
+    <div class="container">
+      <h2 class="text-center mb-4">Search Results</h2>
+      <div class="row">
+        <!-- Flight Card Example -->
+        {% for ticket in page_obj %}
+          <div class="col-md-6 mb-4">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Flight from {{ ticket.flight.origin }} to {{ ticket.flight.destination }}</h5>
+                <p class="card-text">
+                  <strong>Airline:</strong> {{ ticket.flight.airline.name }}<br />
+                  <strong>Departure:</strong> {{ ticket.flight.departure|date:"d M Y, H:i" }}<br />
+                  <strong>Arrival:</strong> {{ ticket.flight.arrival|date:"d M Y, H:i" }}<br />
+                  <strong>Duration:</strong> {{ ticket.flight.get_duration }}<br />
+                  <strong>Price:</strong> ${{ ticket.price }}<br />
+                  <strong>Class:</strong> {{ ticket.get_class_type_display }}<br />
+                  <strong>Remaining Seats:</strong> {{ ticket.quantity }}
+                </p>
+                <a href="{% url 'main:get_ticket' ticket.pk %}" class="btn btn-primary">Book Now</a>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+        {% include "main/inc/pagination.html" %}
+      </div>
+    </div>
+  </section>
+{% endblock %}

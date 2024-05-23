@@ -1,0 +1,66 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block title %}
+  User Profile
+{% endblock %}
+
+{% block content %}
+  <!-- User Profile Section -->
+  <section class="user-profile my-5">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-3">
+          <div class="card mb-4">
+            <div class="card-body text-center">
+              {% if user.image %}
+                <img src="{{ user.image.url }}" class="img-fluid rounded-circle mb-3" alt="User Avatar" />
+              {% else %}
+                <img src="{% static 'main/images/default_profile_image.jpg' %}" class="img-fluid rounded-circle mb-3" alt="User Avatar" />
+              {% endif %}
+              <h5 class="card-title">{{ user.username }}</h5>
+              <p class="card-text">{{ user.email }}</p>
+              <a href="{% url 'users:profile' %}" class="btn btn-primary btn-sm">Edit Profile</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-9">
+          <div class="card mb-4">
+            <div class="card-body">
+              <h5 class="card-title">Your Tickets</h5>
+              {% if user_tickets %}
+                <div class="row">
+                  {% for ticket in user_tickets %}
+                    {% for passenger in ticket.passengers.all %}
+                      {% if passenger.user == user %}
+                        <div class="col-md-6">
+                          <div class="ticket-card card mb-3">
+                            <div class="card-header">
+                              <h6 class="card-title">Flight from {{ ticket.flight.origin }} to {{ ticket.flight.destination }}</h6>
+                            </div>
+                            <div class="card-body">
+                              <p class="card-text">Departure: {{ ticket.flight.departure }}</p>
+                              <p class="card-text">Price: ${{ ticket.price }}</p>
+                              <p class="card-text">Passenger: {{ passenger.full_name }}</p>
+                              <form method="post" action="{% url 'main:profile' %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="ticket_id" value="{{ ticket.id }}" />
+                                <input type="hidden" name="passenger_id" value="{{ passenger.id }}" />
+                                <button type="submit" class="btn btn-success">Send check to email</button>
+                              </form>
+                            </div>
+                          </div>
+                        </div>
+                      {% endif %}
+                    {% endfor %}
+                  {% endfor %}
+                </div>
+              {% else %}
+                <p>You have no tickets.</p>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}

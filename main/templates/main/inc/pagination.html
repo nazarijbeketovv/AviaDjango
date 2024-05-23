@@ -1,0 +1,35 @@
+{% if page_obj.has_other_pages %}
+  <nav aria-label="Page navigation" class="m-4">
+    <ul class="pagination justify-content-center">
+      {% if page_obj.has_previous %}
+        <li class="page-item">
+          <a class="page-link" href="?{% if origin %}origin={{ origin }}&{% endif %}{% if destination %}destination={{ destination }}&{% endif %}{% if departure %}departure={{ departure }}&{% endif %}page={{ page_obj.previous_page_number }}" tabindex="-1" aria-disabled="true">Previous</a>
+        </li>
+      {% else %}
+        <li class="page-item disabled">
+          <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+        </li>
+      {% endif %}
+      {% for p in page_obj.paginator.page_range %}
+        {% if page_obj.number == p %}
+          <li class="page-item active">
+            <a class="page-link" href="?{% if origin %}origin={{ origin }}&{% endif %}{% if destination %}destination={{ destination }}&{% endif %}{% if departure %}departure={{ departure }}&{% endif %}page={{ p }}">{{ p }}</a>
+          </li>
+        {% elif p >= page_obj.number|add:-2 and p <= page_obj.number|add:2 %}
+          <li class="page-item selected">
+            <a class="page-link" href="?{% if origin %}origin={{ origin }}&{% endif %}{% if destination %}destination={{ destination }}&{% endif %}{% if departure %}departure={{ departure }}&{% endif %}page={{ p }}">{{ p }}</a>
+          </li>
+        {% endif %}
+      {% endfor %}
+      {% if page_obj.has_next %}
+        <li class="page-item">
+          <a class="page-link" href="?{% if origin %}origin={{ origin }}&{% endif %}{% if destination %}destination={{ destination }}&{% endif %}{% if departure %}departure={{ departure }}&{% endif %}page={{ page_obj.next_page_number }}">Next</a>
+        </li>
+      {% else %}
+        <li class="page-item disabled">
+          <a class="page-link" href="#">Next</a>
+        </li>
+      {% endif %}
+    </ul>
+  </nav>
+{% endif %}

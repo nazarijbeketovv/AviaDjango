@@ -1,0 +1,43 @@
+{% extends 'main/base.html' %}
+{% block title %}
+  Get the Ticket!
+{% endblock %}
+
+{% block content %}
+  <!-- Ticket Purchase Section -->
+  <section class="ticket-purchase my-5">
+    <div class="container">
+      <h2 class="text-center mb-4">Purchase Your Ticket</h2>
+      <div class="row">
+        <div class="col-lg-8 mx-auto">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Flight Details</h5>
+              <p class="card-text">
+                <strong>From:</strong> {{ ticket.flight.origin }}<br />
+                <strong>To:</strong> {{ ticket.flight.destination }}<br />
+                <strong>Airline:</strong> {{ ticket.flight.airline.name }}<br />
+                <strong>Departure:</strong> {{ ticket.flight.departure|date:'H:i A, jS M Y' }}<br />
+                <strong>Arrival:</strong> {{ ticket.flight.arrival|date:'H:i A, jS M Y' }}<br />
+                <strong>Duration:</strong> {{ ticket.flight.get_duration }}<br />
+                <strong>Price:</strong> ${{ ticket.price }}<br />
+                <strong>Class:</strong> {{ ticket.get_class_type_display }}<br />
+                <strong>Remaining Seats:</strong> {{ ticket.quantity }}
+              </p>
+              <hr />
+              <h5 class="card-title">Passenger Information</h5>
+              <form method="post">
+                {% csrf_token %}
+                {{ form_passenger.as_p }}
+                <hr />
+                <h5 class="card-title">Payment Information</h5>
+                {{ form_payment.as_p }}
+                <button type="submit" class="btn btn-primary w-100">Purchase Ticket</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}
