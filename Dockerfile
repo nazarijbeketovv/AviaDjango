@@ -1,16 +1,20 @@
-FROM python:3.9-alpine3.16
+# Dockerfile
 
+# Используйте подходящий базовый образ, например python:3.9
+FROM python:3.9
 
-RUN apk add --no-cache postgresql-client build-base postgresql-dev
-
-COPY . /app
+# Установите рабочую директорию
 WORKDIR /app
 
-RUN pip install --no-cache-dir -r requirements.txt
+# Скопируйте файлы зависимостей
+COPY requirements.txt /app/
 
-RUN adduser --disabled-password app-user
-USER app-user
+# Установите зависимости
+RUN pip install --upgrade pip
+RUN pip install -r requirements.txt
 
-EXPOSE 8000
+# Скопируйте все файлы проекта
+COPY . /app/
 
+# Команда по умолчанию для запуска приложения
 CMD ["sh", "-c", "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"]

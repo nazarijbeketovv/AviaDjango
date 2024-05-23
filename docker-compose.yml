@@ -1,4 +1,4 @@
-version: '3.8'
+
 
 services:
   app:
@@ -7,22 +7,18 @@ services:
     restart: always
     ports:
       - "8000:8000"
-    environment:
-      - DB_HOST=database
     env_file:
       - .env
     volumes:
       - .:/app
+    depends_on:
+      - database
     command: >
       sh -c "python manage.py migrate &&
              python manage.py runserver 0.0.0.0:8000"
-    depends_on:
-      - database
 
   database:
-    image: postgres
-    hostname: database
-
+    image: postgres:14.6-alpine
     restart: always
     ports:
       - "5432:5432"
@@ -31,39 +27,35 @@ services:
       - POSTGRES_PASSWORD=pass
       - POSTGRES_DB=dbname
 
-
   redis:
-    image: redis:7.0.5-alpine
+    restart: always
+    image: redis:7.2.4-alpine
     hostname: redis
 
   worker:
-    build:
+    build: 
       context: .
     hostname: worker
-    entrypoint: celery
-    command: -A proj worker --loglevel=info 
+    entrypoint: ["sh", "-c", "celery -A proj worker -l info"]
+    env_file:
+      - .env
     volumes:
-    - .:/app
-    links:
-      - redis
+      - .:/app
     depends_on:
       - redis
-
-
+      - database
 
   flower:
-
-    build:
+    build: 
       context: .
     hostname: flower
-    restart: always
-    entrypoint: celery
-    command: -A proj flower 
-    volumes:
-    - .:/app
-    links:
-      - redis
-    depends_on:
-      - redis
+    entrypoint: ["sh", "-c", "celery -A proj --broker=redis://redis:6379/0 flower --loglevel=info"]
+    env_file:
+      - .env
     ports:
       - "5555:5555"
+    volumes:
+      - .:/app
+    depends_on:
+      - redis
+      - database
