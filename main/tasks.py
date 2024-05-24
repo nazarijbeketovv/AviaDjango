@@ -7,7 +7,6 @@ from .models import Ticket
 
 @shared_task
 def send_ticket_email(ticket_id, user_email):
-    # Здесь вы можете получить данные билета и сформировать содержимое письма
     ticket = Ticket.objects.get(id=ticket_id)
     subject = "Your E-Ticket"
     message = f"Thank you for your purchase. Your ticket details:\nFlight from {ticket.flight.origin} to {ticket.flight.destination}\nDeparture: {ticket.flight.departure}\nPrice: ${ticket.price}"

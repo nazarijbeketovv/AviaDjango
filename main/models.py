@@ -3,6 +3,14 @@ from django.contrib.auth import get_user_model
 
 
 class Airplane(models.Model):
+    """
+    Модель самолета.
+
+    Атрибуты:
+        name (CharField): Название самолета.
+        seats (PositiveIntegerField): Количество мест в самолете.
+    """
+
     name = models.CharField(max_length=64)
     seats = models.PositiveIntegerField(default=10)
 
@@ -11,6 +19,13 @@ class Airplane(models.Model):
 
 
 class Airline(models.Model):
+    """
+    Модель авиакомпании.
+
+    Атрибуты:
+        name (CharField): Название авиакомпании.
+    """
+
     name = models.CharField(max_length=64)
 
     def __str__(self):
@@ -18,6 +33,18 @@ class Airline(models.Model):
 
 
 class Flight(models.Model):
+    """
+    Модель рейса.
+
+    Атрибуты:
+        origin (CharField): Город отправления.
+        destination (CharField): Город назначения.
+        departure (DateTimeField): Время отправления.
+        arrival (DateTimeField): Время прибытия.
+        airline (ForeignKey): Связь с моделью Airline.
+        airplane (ForeignKey): Связь с моделью Airplane.
+    """
+
     origin = models.CharField(max_length=64)
     destination = models.CharField(max_length=64)
     departure = models.DateTimeField()
@@ -26,6 +53,9 @@ class Flight(models.Model):
     airplane = models.ForeignKey("Airplane", on_delete=models.CASCADE)
 
     def get_duration(self):
+        """
+        Возвращает длительность рейса в формате 'X days, Y hours, Z minutes'.
+        """
         duration = self.arrival - self.departure
         days, seconds = duration.days, duration.seconds
         hours = seconds // 3600
@@ -37,6 +67,16 @@ class Flight(models.Model):
 
 
 class Passenger(models.Model):
+    """
+    Модель пассажира.
+
+    Атрибуты:
+        user (ForeignKey): Связь с моделью пользователя.
+        full_name (CharField): Полное имя пассажира.
+        email (EmailField): Email пассажира.
+        passport_number (CharField): Номер паспорта пассажира.
+    """
+
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     full_name = models.CharField(max_length=100)
     email = models.EmailField()
@@ -47,6 +87,18 @@ class Passenger(models.Model):
 
 
 class Ticket(models.Model):
+    """
+    Модель билета.
+
+    Атрибуты:
+        flight (ForeignKey): Связь с моделью рейса.
+        price (PositiveIntegerField): Цена билета.
+        class_type (CharField): Класс билета (economy, business, first).
+        users_who_bought (ManyToManyField): Пользователи, купившие билет.
+        passengers (ManyToManyField): Пассажиры, связанные с билетом.
+        quantity (PositiveIntegerField): Количество билетов.
+    """
+
     CLASS_TYPE_CHOICES = [
         ("economy", "Economy"),
         ("business", "Business"),
