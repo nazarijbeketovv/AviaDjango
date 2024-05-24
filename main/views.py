@@ -9,6 +9,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 from django.core.mail import send_mail
 from django.core.paginator import Paginator
+from django.conf import settings
 
 
 def index(request):
@@ -35,7 +36,7 @@ def search_flights(request):
 
     return render(
         request,
-        "main/wanted_tickets.html",
+        "main/results.html",
         {
             "form": form,
             "tickets": tickets,
@@ -119,6 +120,7 @@ def profile(request):
         {
             "user": request.user,
             "user_tickets": user_tickets,
+            "default_image": settings.DEFAULT_PROFILE_IMAGE,
         },
     )
 

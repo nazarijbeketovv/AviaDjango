@@ -8,7 +8,7 @@
   <section class="about my-5">
     <div class="container">
       <h2 class="text-center mb-4">About This Project</h2>
-      <p>This is a pet project for booking airline tickets. It is designed to demonstrate the functionality of a flight booking system. The project includes the following features:</p>
+      <p>This project is an airline ticket booking system designed to demonstrate the functionality of a flight booking system. The project includes the following features:</p>
       <ul>
         <li>Search for flights based on origin, destination, and departure date.</li>
         <li>View search results with detailed flight information.</li>
@@ -17,8 +17,15 @@
         <li>Send email confirmations for booked tickets.</li>
         <li>User authentication with login and registration functionality.</li>
         <li>User profile page displaying booked tickets and user information.</li>
+        <li>Support for background tasks to handle requests and notifications using Celery and Redis.</li>
       </ul>
       <p>This project is built using Django, a powerful web framework for Python, along with Bootstrap 5 for styling and layout.</p>
+      <p>Additional features include:</p>
+      <ul>
+        <li>Use of Docker for containerizing the application.</li>
+        <li>Celery task monitoring dashboard (Flower).</li>
+        <li>Initial data including sample users, flights, tickets, and passengers.</li>
+      </ul>
     </div>
   </section>
 {% endblock %}
