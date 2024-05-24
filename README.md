@@ -55,6 +55,7 @@ DB_HOST=database
 DB_PORT=5432
 ```
 
+
 ### Сборка и запуск приложения с помощью Docker Compose:
 
 ```sh
